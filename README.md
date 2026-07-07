@@ -42,6 +42,14 @@ For log analysis:
 python3 scripts/analyze.py --type log --file sample-logs/lambda-timeout.log
 ```
 
+AI AWS Knowledge Assistant:
+
+```bash
+python3 scripts/analyze.py --type aws-doc --file aws-questions/lambda-timeout.md
+```
+
+This workflow uses `prompts/aws-explainer.md` to prepare AWS concept explanations and reliability guides from question files in `aws-questions/`.
+
 Dry-run mode shows the planned analysis without creating or modifying files:
 
 ```bash

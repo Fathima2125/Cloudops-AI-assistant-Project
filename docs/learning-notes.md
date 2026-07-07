@@ -162,3 +162,75 @@ A future version could:
 - Add safety checks before any infrastructure-changing recommendation.
 
 This phase moves the project from manual prompt usage toward a more automated CloudOps assistant while keeping the current version beginner-friendly and safe.
+
+## Phase 6: AI AWS Knowledge Assistant
+
+In this phase, I built a reusable AWS concept explanation workflow. The goal was to help explain AWS topics in a consistent format for learning, troubleshooting, and interview preparation.
+
+### What I Built
+
+I created a reusable prompt template at `prompts/aws-explainer.md`. The template asks the AI to explain AWS concepts using a consistent structure:
+
+- Executive Summary
+- AWS Concept
+- Explanation
+- Best Practices
+- Common Mistakes
+- Troubleshooting Tips
+- Interview Explanation
+- Official AWS documentation references by topic or service name
+
+I also used the template to generate AWS concept guides for topics such as:
+
+- Lambda timeouts
+- Security groups and open SSH
+- IAM roles vs IAM users
+- ALB vs NLB
+- Terraform backends
+
+The generated guides were saved under `reports/reliability/`, and the concepts were summarized in `docs/aws-knowledge-base.md`.
+
+### Why AWS Documentation Matters
+
+AWS documentation matters because cloud services change over time. Limits, features, pricing, recommended patterns, and security guidance can evolve. A CloudOps engineer should not rely only on memory or AI-generated explanations for final decisions.
+
+Official AWS documentation helps confirm:
+
+- Current service behavior
+- Supported features
+- Service limits and quotas
+- Security recommendations
+- Monitoring and troubleshooting options
+- Configuration details
+
+In this project, the prompt template tells the AI to mention relevant AWS documentation topics instead of copying documentation content. This keeps the output useful while reminding the engineer to verify important details from official sources.
+
+### How AI Can Help Engineers Learn Faster
+
+AI can help engineers learn faster by turning broad cloud topics into clear, structured explanations. Instead of reading several pages first, the engineer can start with a concise summary, understand the main idea, then go deeper into official documentation.
+
+AI is useful for:
+
+- Explaining complex AWS concepts in simple language.
+- Comparing related services, such as ALB and NLB.
+- Highlighting best practices and common mistakes.
+- Creating interview-ready explanations.
+- Connecting concepts to troubleshooting workflows.
+- Building reusable notes and knowledge bases.
+
+AI should support learning, not replace verification. The best workflow is to use AI for structure and explanation, then use official documentation for confirmation.
+
+### How This Could Later Integrate With AWS Documentation MCP
+
+A future version of this project could connect the AWS concept workflow to an AWS Documentation MCP server. Instead of only using local question files and prompt templates, the assistant could retrieve relevant official documentation context before generating a guide.
+
+That future workflow could:
+
+- Read an AWS question from `aws-questions/`.
+- Select `prompts/aws-explainer.md`.
+- Query AWS Documentation MCP for relevant service documentation.
+- Generate a Markdown guide using both the local prompt and official documentation context.
+- Save the output under `reports/reliability/`.
+- Include official documentation topics for follow-up review.
+
+This would make the AI AWS Knowledge Assistant more accurate and useful while keeping the project safe, educational, and portfolio-friendly.

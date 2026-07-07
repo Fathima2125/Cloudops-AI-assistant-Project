@@ -13,20 +13,20 @@ from pathlib import Path
 def parse_args():
     """Read command-line arguments from the user."""
     parser = argparse.ArgumentParser(
-        description="Prepare a Terraform or log analysis workflow."
+        description="Prepare a Terraform, log, or AWS documentation analysis workflow."
     )
 
     parser.add_argument(
         "--type",
-        choices=["terraform", "log"],
+        choices=["terraform", "log", "aws-doc"],
         required=True,
-        help="Type of analysis to run: terraform or log.",
+        help="Type of analysis to run: terraform, log, or aws-doc.",
     )
 
     parser.add_argument(
         "--file",
         required=True,
-        help="Path to the Terraform file or log file to analyze.",
+        help="Path to the Terraform, log, or AWS question file to analyze.",
     )
 
     parser.add_argument(
@@ -43,15 +43,20 @@ def get_workflow_paths(analysis_type):
     if analysis_type == "terraform":
         return Path("prompts/terraform-review.md"), Path("reports/security/")
 
-    return Path("prompts/log-analysis.md"), Path("reports/incidents/")
+    if analysis_type == "log":
+        return Path("prompts/log-analysis.md"), Path("reports/incidents/")
+
+    return Path("prompts/aws-explainer.md"), Path("reports/reliability/")
 
 
 def build_output_path(input_file, analysis_type, report_folder):
     """Create a report filename from the input filename."""
     if analysis_type == "terraform":
         report_name = f"{input_file.stem}-review.md"
-    else:
+    elif analysis_type == "log":
         report_name = f"{input_file.stem}-analysis.md"
+    else:
+        report_name = f"{input_file.stem}-guide.md"
 
     return report_folder / report_name
 
