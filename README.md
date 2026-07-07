@@ -25,6 +25,33 @@ Example Workflows
 - Store completed analysis in `reports/` or one of its category folders.
 - Review every recommendation manually before running any AWS or Terraform command.
 
+CLI Automation Workflow
+-----------------------
+
+The project includes a small helper script at `scripts/analyze.py`. The script prepares an analysis workflow by validating an input file, selecting the correct prompt template, and showing the expected output report path.
+
+For Terraform analysis:
+
+```bash
+python3 scripts/analyze.py --type terraform --file terraform/sample-vpc.tf
+```
+
+For log analysis:
+
+```bash
+python3 scripts/analyze.py --type log --file sample-logs/lambda-timeout.log
+```
+
+Dry-run mode shows the planned analysis without creating or modifying files:
+
+```bash
+python3 scripts/analyze.py --type log --file sample-logs/lambda-timeout.log --dry-run
+```
+
+Current limitation: `scripts/analyze.py` prepares the analysis workflow, but it does not directly call an AI API yet.
+
+Future enhancement: connect the script to the OpenAI API or an MCP server so it can generate reports automatically while preserving human review and safety controls.
+
 Repository Structure
 --------------------
 

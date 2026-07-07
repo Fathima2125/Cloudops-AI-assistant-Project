@@ -103,3 +103,62 @@ Codex helped create a repeatable workflow for log analysis. I created a reusable
 The outputs became professional incident reports in `reports/incidents/`, plus a shared troubleshooting workflow in `docs/cloudops-troubleshooting-workflow.md`.
 
 This helped show how an AI CloudOps Assistant can support real operational work by turning logs into clear explanations, action steps, and portfolio-ready documentation.
+
+## Phase 5: Automation CLI Script
+
+In this phase, I built a small Python CLI script at `scripts/analyze.py`. The script prepares an analysis workflow for Terraform files and cloud logs. It does not call an AI API yet, but it helps standardize how inputs, prompts, and report paths are selected.
+
+### What I Built
+
+The CLI accepts:
+
+- `--type terraform` or `--type log`
+- `--file` for the input file path
+- `--dry-run` to preview the workflow without creating or modifying files
+
+The script validates that the input file exists, selects the correct prompt template, and generates the expected output report path.
+
+Examples:
+
+- Terraform input uses `prompts/terraform-review.md` and saves reports under `reports/security/`.
+- Log input uses `prompts/log-analysis.md` and saves reports under `reports/incidents/`.
+
+### Why CLI Automation Is Useful in CloudOps
+
+CLI automation is useful because CloudOps work often needs to be repeatable, fast, and consistent. Engineers frequently analyze logs, review infrastructure files, generate reports, and follow runbooks from the terminal.
+
+This script helps by:
+
+- Reducing manual path selection mistakes.
+- Making the analysis workflow consistent.
+- Supporting repeatable Terraform and log review steps.
+- Keeping the project simple and easy to demonstrate.
+- Creating a foundation for future automation.
+
+### How the Script Maps Inputs to Prompts and Reports
+
+The script maps the analysis type to a prompt and report folder:
+
+| Analysis Type | Prompt Template | Report Folder | Filename Pattern |
+| --- | --- | --- | --- |
+| `terraform` | `prompts/terraform-review.md` | `reports/security/` | `<input-name>-review.md` |
+| `log` | `prompts/log-analysis.md` | `reports/incidents/` | `<input-name>-analysis.md` |
+
+For example:
+
+- `terraform/sample-vpc.tf` becomes `reports/security/sample-vpc-review.md`.
+- `sample-logs/lambda-timeout.log` becomes `reports/incidents/lambda-timeout-analysis.md`.
+
+### How This Prepares the Project for AI API or MCP Integration
+
+The script separates workflow setup from AI execution. That makes it easier to add automation later without redesigning the project.
+
+A future version could:
+
+- Read the selected prompt file.
+- Read the selected input file.
+- Send both to the OpenAI API or an MCP server.
+- Save the generated Markdown report to the output path.
+- Add safety checks before any infrastructure-changing recommendation.
+
+This phase moves the project from manual prompt usage toward a more automated CloudOps assistant while keeping the current version beginner-friendly and safe.
