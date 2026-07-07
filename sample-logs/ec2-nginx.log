@@ -1,0 +1,7 @@
+nginx.service: Failed to start.
+
+Address already in use
+
+Failed to bind to port 80
+
+Another process is using port 80.

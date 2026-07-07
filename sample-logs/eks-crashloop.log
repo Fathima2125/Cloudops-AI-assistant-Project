@@ -1,0 +1,9 @@
+Back-off restarting failed container
+
+CrashLoopBackOff
+
+Error connecting to PostgreSQL
+
+Connection refused
+
+Pod restarted 18 times

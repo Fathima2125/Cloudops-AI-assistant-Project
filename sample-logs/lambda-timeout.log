@@ -1,0 +1,10 @@
+START RequestId: xxxxxxxxx Version: $LATEST
+
+Task timed out after 30.03 seconds
+
+END RequestId: xxxxxxxxx
+
+REPORT RequestId: xxxxxxxxx
+Duration: 30003 ms
+Memory Size: 128 MB
+Max Memory Used: 118 MB
