@@ -60,6 +60,15 @@ Current limitation: `scripts/analyze.py` prepares the analysis workflow, but it 
 
 Future enhancement: connect the script to the OpenAI API or an MCP server so it can generate reports automatically while preserving human review and safety controls.
 
+MCP Integration
+---------------
+
+This project integrates Codex with the AWS Documentation MCP Server. MCP allows the AI assistant to access external tools and documentation through a controlled interface.
+
+The current MCP usage is documentation-only and safe: the assistant can search and read official AWS documentation, but it does not inspect, modify, or operate on live AWS resources.
+
+Future versions can add read-only AWS resource inspection so the assistant can help summarize existing cloud environments while still avoiding infrastructure changes.
+
 Repository Structure
 --------------------
 

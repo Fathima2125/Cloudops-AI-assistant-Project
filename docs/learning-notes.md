@@ -234,3 +234,68 @@ That future workflow could:
 - Include official documentation topics for follow-up review.
 
 This would make the AI AWS Knowledge Assistant more accurate and useful while keeping the project safe, educational, and portfolio-friendly.
+
+## Phase 8: MCP Integration
+
+In this phase, I connected the project workflow to the AWS Documentation MCP Server. The goal was to move from AI answers based only on local prompts and general model knowledge toward AI-assisted CloudOps reports that can use official AWS documentation as source context.
+
+### What MCP Is
+
+MCP stands for Model Context Protocol. It is a standard way for an AI assistant to connect to external tools, documentation sources, and systems through controlled servers.
+
+Instead of giving the assistant unrestricted access to everything, MCP lets a project expose specific capabilities. For this project, the useful capability is documentation access: Codex can search and read AWS documentation through the AWS Documentation MCP Server.
+
+### Why MCP Matters for AI Agents
+
+MCP matters because AI agents are more useful when they can safely retrieve current, task-specific context. Without external tools, an assistant may rely only on its training data and the files in the repository. That can be enough for basic explanations, but it is weaker for cloud work where service limits, best practices, and documentation change over time.
+
+For CloudOps, MCP helps an AI assistant:
+
+- Look up official documentation before writing recommendations.
+- Reduce guessing when explaining AWS services.
+- Produce reports that are easier to verify.
+- Keep the workflow safer by exposing only specific tool capabilities.
+- Separate documentation access from infrastructure access.
+
+### How Codex Can Use MCP Servers
+
+Codex can use MCP servers as external tool providers. A project can configure an MCP server, and Codex can call the tools exposed by that server during a task.
+
+In this project, Codex uses the AWS Documentation MCP Server to:
+
+- Search AWS documentation for relevant Lambda, CloudWatch, and reliability topics.
+- Read selected AWS documentation pages.
+- Extract best practices and troubleshooting guidance.
+- Use the documentation context to improve Markdown reports.
+- Include official AWS documentation links for follow-up review.
+
+This keeps the assistant useful while still respecting the project's safety model. The current MCP integration does not inspect live AWS accounts, change resources, run Terraform, or modify infrastructure.
+
+### Why AWS Documentation MCP Is Useful for CloudOps
+
+AWS Documentation MCP is useful for CloudOps because operational work often depends on accurate service behavior. When troubleshooting Lambda timeouts, for example, the assistant can confirm timeout limits, memory and CPU behavior, CloudWatch log fields, CloudWatch Logs Insights queries, and SQS visibility timeout guidance from AWS documentation.
+
+This is valuable because CloudOps engineers need recommendations that are both practical and verifiable. A report is stronger when it can point back to official AWS documentation instead of only giving a general explanation.
+
+For this project, AWS Documentation MCP improved the Lambda timeout workflow by helping generate documentation-based guidance for:
+
+- Lambda timeout configuration.
+- Memory and duration troubleshooting.
+- External API timeout handling.
+- CloudWatch Logs troubleshooting.
+- CloudWatch Logs Insights queries.
+- Interview-ready explanations.
+
+### What I Learned from Adding MCP
+
+I learned that MCP is a practical way to make an AI assistant more grounded without making it unsafe. The assistant can retrieve official documentation, but it does not need permission to touch production systems.
+
+I also learned that MCP works best when the workflow is specific. Instead of asking for a broad AWS explanation, it is better to ask for a focused task, such as troubleshooting Lambda timeout issues using AWS documentation. This helps the assistant search for the right sources and produce a clearer report.
+
+The biggest lesson is that AI-assisted CloudOps should combine three things:
+
+- Local project context, such as prompts, reports, and learning notes.
+- Official documentation, retrieved through a controlled MCP server.
+- Human review before any operational change.
+
+This phase made the project more realistic because it shows how an AI CloudOps Assistant can safely use external knowledge while staying within read-only, documentation-focused boundaries.

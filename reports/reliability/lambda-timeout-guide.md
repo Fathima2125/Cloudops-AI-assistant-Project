@@ -22,16 +22,42 @@ CloudOps engineers should understand Lambda timeouts because they affect reliabi
 
 ## Best Practices
 
-- Set the Lambda timeout based on realistic workload behavior, not a guess.
-- Keep timeout values lower than upstream service timeout limits, such as API Gateway or load balancer timeouts.
-- Use CloudWatch Metrics to monitor duration, errors, throttles, and concurrent executions.
-- Add structured logs around important code steps so slow operations are visible.
-- Use AWS X-Ray or tracing to identify slow downstream dependencies.
-- Configure memory based on performance testing. More memory can also provide more CPU.
-- Add explicit timeouts for database calls, HTTP requests, and SDK calls.
-- Use retries carefully so repeated timeouts do not overload downstream systems.
-- Use dead-letter queues or failure destinations for asynchronous workloads.
-- Break large jobs into smaller batches when possible.
+### 1. Lambda timeout configuration
+
+- Configure the timeout from evidence, not from a guess. AWS Lambda supports timeout values from 1 second to 900 seconds, and the default is 3 seconds.
+- Avoid setting the timeout too close to the function's average duration. AWS warns that this increases the risk of unexpected timeouts when input size, data transfer, or downstream service latency changes.
+- Test with realistic data, including the upper bound of expected file sizes, record counts, and request parameters.
+- Add upper-bound limits where practical. For example, limit accepted file size or batch size so the function does not receive work it cannot finish reliably.
+- Keep the Lambda timeout aligned with upstream and downstream limits. For example, a function behind a synchronous API should finish before the caller gives up.
+- For Amazon SQS event sources, make sure the function's expected invocation time does not exceed the queue visibility timeout. If it does, messages can be processed more than once.
+
+### 2. Memory and duration troubleshooting
+
+- Review the Lambda `REPORT` log line for `Duration`, `Billed Duration`, `Memory Size`, `Max Memory Used`, and `Init Duration`.
+- If the function is slow and memory usage is high, increase the memory setting in a test environment and compare the result.
+- Remember that Lambda CPU capacity increases with memory. A function can run faster after increasing memory even if it was not using all available memory.
+- If the timeout happens during initialization, reduce expensive startup work, move reusable clients outside the handler, and consider increasing timeout or memory.
+- Use performance testing to find the best memory setting instead of choosing the lowest possible value by default.
+- Watch both average and high-percentile duration. A function can look healthy on average while still timing out during larger or slower requests.
+
+### 3. External API timeout handling
+
+- Set explicit timeout values for HTTP clients, AWS SDK clients, database clients, and other network calls. Do not let a dependency wait forever inside a Lambda invocation.
+- Use a timeout hierarchy. The overall API call timeout should be longer than a single attempt timeout, and the single attempt timeout should be longer than lower-level connection, TLS, read, and write timeouts.
+- Account for retries when choosing timeout values. If each attempt can take 10 seconds and the client retries three times, the Lambda timeout must leave enough time for retry delay, logging, and cleanup.
+- Fail fast on connection problems. Short connection timeouts help identify unreachable services without consuming most of the Lambda invocation.
+- Use retries with backoff and jitter for transient failures, but avoid retry settings that cause repeated long waits or overload a slow downstream service.
+- Log the dependency name, operation, attempt count, elapsed time, and timeout value for important external calls. This makes it easier to tell whether the Lambda code is slow or a dependency is slow.
+
+### 4. CloudWatch Logs troubleshooting
+
+- Start with the request ID. In CloudWatch Logs, every Lambda invocation includes `START`, `END`, and `REPORT` entries that share the request ID.
+- Look for `Task timed out` messages to confirm that the failure is a timeout and not an application error.
+- Find the last application log line before the timeout. It often shows which database call, API request, loop, or processing step was running when Lambda stopped the invocation.
+- Use structured JSON logs and log levels so CloudWatch Logs Insights can filter errors, warnings, slow operations, request IDs, and dependency names.
+- Use CloudWatch Logs Insights to find timeout patterns over time. Useful fields include `@duration`, `@billedDuration`, `@maxMemoryUsed`, `@memorySize`, `@requestId`, and `@type`.
+- Use CloudWatch Logs Live Tail during active troubleshooting when you need to see new log events in near real time.
+- Create CloudWatch alarms for duration, errors, and throttles so timeout problems are detected before they become a larger incident.
 
 ## Common Mistakes
 
@@ -52,13 +78,43 @@ CloudOps engineers should understand Lambda timeouts because they affect reliabi
 3. Compare actual duration with the configured timeout.
 4. Check the `Max Memory Used` value in the Lambda report log line.
 5. Look for the last successful application log line before the timeout.
-6. Add timing logs around database calls, API calls, file operations, and loops.
-7. Check whether the function depends on a slow external service or database.
-8. Confirm whether the function runs inside a VPC and whether networking is configured correctly.
-9. Test with a smaller payload to see whether payload size affects duration.
-10. Increase memory temporarily in a test environment to see whether performance improves.
-11. Review retry behavior for the event source to avoid repeated failed invocations.
-12. Validate any fix in a non-production environment before changing production settings.
+6. Check `Init Duration` to see whether cold start or initialization work is contributing to the timeout.
+7. Add timing logs around database calls, API calls, file operations, and loops.
+8. Check whether the function depends on a slow external service or database.
+9. Confirm that external API clients have connection, read, attempt, and total call timeouts.
+10. Confirm whether the function runs inside a VPC and whether networking is configured correctly.
+11. Test with a smaller payload to see whether payload size affects duration.
+12. Increase memory temporarily in a test environment to see whether performance improves.
+13. Review retry behavior for the event source to avoid repeated failed invocations.
+14. For SQS triggers, compare Lambda timeout, expected processing time, and queue visibility timeout.
+15. Validate any fix in a non-production environment before changing production settings.
+
+## Useful CloudWatch Logs Insights Queries
+
+Find Lambda invocations that timed out:
+
+```sql
+filter @message like /Task timed out/
+| stats count() by bin(30m)
+```
+
+Review latency over time:
+
+```sql
+filter @type = "REPORT"
+| stats avg(@duration), max(@duration), min(@duration) by bin(5m)
+```
+
+Review memory usage:
+
+```sql
+filter @type = "REPORT"
+| stats
+    avg(@maxMemoryUsed / 1024 / 1024) as avgMemoryUsedMB,
+    max(@maxMemoryUsed / 1024 / 1024) as maxMemoryUsedMB,
+    max(@memorySize / 1024 / 1024) as configuredMemoryMB
+  by bin(30m)
+```
 
 ## Interview Explanation
 
@@ -68,14 +124,8 @@ I would not just increase the timeout immediately. I would first identify why th
 
 ## Official AWS Documentation References
 
-Review the following official AWS documentation topics:
-
-- AWS Lambda function configuration
-- AWS Lambda timeout settings
-- AWS Lambda monitoring with Amazon CloudWatch
-- AWS Lambda logs in Amazon CloudWatch Logs
-- AWS Lambda function metrics
-- AWS X-Ray tracing for Lambda
-- AWS Lambda error handling and retries
-- AWS Lambda event source mappings
-- AWS Lambda destinations and dead-letter queues
+- [Configure Lambda function timeout](https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html)
+- [Troubleshoot configuration issues in Lambda](https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html)
+- [Best practices for working with AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html)
+- [Viewing CloudWatch logs for Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-view.html)
+- [AWS SDK for Java 2.x timeout configuration](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/timeouts.html)
