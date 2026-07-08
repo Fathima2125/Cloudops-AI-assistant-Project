@@ -1,8 +1,10 @@
 """
-Reusable OpenAI client helper for the CloudOps AI Assistant project.
+Experimental OpenAI API helper for the CloudOps AI Assistant project.
 
-This module keeps OpenAI setup in one place so future scripts can import a
-single function instead of repeating API key loading and client creation.
+This module is optional and is not part of the main working demo. The current
+project workflow uses Codex, local prompts, the CLI helper, and the AWS
+Documentation MCP Server. Use this file only for future API-backed experiments
+when an OpenAI API key and quota are available.
 """
 
 import os

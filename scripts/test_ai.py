@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-Simple OpenAI smoke test for the CloudOps AI Assistant project.
+Experimental OpenAI smoke test for the CloudOps AI Assistant project.
 
-Run this script only when you want to make a real API call.
+This is optional and not required for the main portfolio workflow. It makes a
+real API call and can fail if OPENAI_API_KEY is missing or the account has no
+available quota.
 """
 import sys
 from pathlib import Path

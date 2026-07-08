@@ -4,11 +4,14 @@ This project is a small, portfolio-friendly AI CloudOps Assistant designed aroun
 
 ## Workflow
 
+![CloudOps AI Assistant architecture](../screenshots/Diagram-CloudopsAi-assistant.png)
+
 1. Review an operational input such as a Terraform file, CloudWatch-style log, or incident note.
 2. Select the relevant prompt from `prompts/`.
 3. Use Codex or an AI assistant to analyze the input with the selected prompt.
-4. Save the result as a Markdown report under `reports/`.
-5. Review the recommendation manually before taking any cloud action.
+4. For AWS documentation tasks, use the AWS Documentation MCP Server to retrieve official documentation context.
+5. Save the result as a Markdown report under `reports/`.
+6. Review the recommendation manually before taking any cloud action.
 
 ## Main Components
 
@@ -17,6 +20,7 @@ This project is a small, portfolio-friendly AI CloudOps Assistant designed aroun
 - `terraform/` contains sample infrastructure code for review and risk analysis.
 - `reports/` contains generated or curated CloudOps outputs.
 - `docs/` contains project documentation, safety guidance, and operating notes.
+- `.codex/config.toml` configures the AWS Documentation MCP Server for documentation-only lookup.
 
 ## CLI-Oriented Design
 
@@ -32,4 +36,4 @@ The assistant is intentionally lightweight. A typical workflow can be run from t
 
 ## Non-Goals
 
-This version does not include FastAPI, Docker, Kubernetes deployment manifests, or CI automation. Those may be added later if the project grows beyond a portfolio CLI assistant.
+This version does not include FastAPI, Docker, Kubernetes deployment manifests, CI automation, or live AWS resource inspection. Those may be added later if the project grows beyond a portfolio CLI assistant.

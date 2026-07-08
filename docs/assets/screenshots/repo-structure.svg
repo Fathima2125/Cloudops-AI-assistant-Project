@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc">
+  <title id="title">GitHub repository structure</title>
+  <desc id="desc">Terminal-style screenshot showing the project repository structure.</desc>
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <rect x="24" y="24" width="952" height="512" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="48" y="72" fill="#0f172a" font-family="Menlo, Consolas, monospace" font-size="18">cloudops-ai-assistant/</text>
+  <text x="72" y="112" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">.codex/config.toml                  # AWS Documentation MCP server</text>
+  <text x="72" y="144" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">aws-questions/                       # AWS learning prompts</text>
+  <text x="72" y="176" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">docs/                                # Architecture, safety, notes</text>
+  <text x="72" y="208" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">docs/assets/                         # Diagram and screenshots</text>
+  <text x="72" y="240" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">prompts/                             # Reusable Codex prompts</text>
+  <text x="72" y="272" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">sample-logs/                         # Lambda, EKS, EC2 log samples</text>
+  <text x="72" y="304" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">scripts/analyze.py                   # CLI dry-run helper</text>
+  <text x="72" y="336" fill="#1d4ed8" font-family="Menlo, Consolas, monospace" font-size="16">terraform/                           # Sample VPC Terraform</text>
+  <text x="72" y="384" fill="#9a3412" font-family="Menlo, Consolas, monospace" font-size="16">reports/incidents/                   # Log analysis reports</text>
+  <text x="72" y="416" fill="#9a3412" font-family="Menlo, Consolas, monospace" font-size="16">reports/security/                    # Terraform review reports</text>
+  <text x="72" y="448" fill="#9a3412" font-family="Menlo, Consolas, monospace" font-size="16">reports/reliability/                 # AWS docs assistant reports</text>
+  <text x="72" y="496" fill="#64748b" font-family="Menlo, Consolas, monospace" font-size="15">Optional: app/ai and scripts/test_ai.py are experimental OpenAI API helpers.</text>
+</svg>

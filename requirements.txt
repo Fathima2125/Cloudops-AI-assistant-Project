@@ -1,1 +1,4 @@
+# Optional/experimental OpenAI API dependency.
+# The main project workflow uses Codex + AWS Documentation MCP and does not
+# require this package unless you run scripts/test_ai.py.
 openai>=1.0.0

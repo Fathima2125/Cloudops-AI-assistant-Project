@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+  <title id="title">Codex using AWS Documentation MCP</title>
+  <desc id="desc">Terminal-style screenshot showing Codex searching AWS documentation through MCP and creating a Lambda timeout report.</desc>
+  <rect width="1000" height="520" fill="#0f172a"/>
+  <rect x="24" y="24" width="952" height="472" rx="12" fill="#111827" stroke="#334155"/>
+  <circle cx="54" cy="50" r="7" fill="#ef4444"/>
+  <circle cx="78" cy="50" r="7" fill="#f59e0b"/>
+  <circle cx="102" cy="50" r="7" fill="#22c55e"/>
+  <text x="42" y="92" fill="#93c5fd" font-family="Menlo, Consolas, monospace" font-size="18">$ codex</text>
+  <text x="42" y="126" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="16">User: Use the AWS Documentation MCP server to create a Lambda timeout report.</text>
+  <text x="42" y="170" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="16">Codex: Searching AWS documentation with mcp__aws_docs.search_documentation...</text>
+  <text x="42" y="204" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="16">Found: Configure Lambda function timeout</text>
+  <text x="42" y="238" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="16">Found: Troubleshoot configuration issues in Lambda</text>
+  <text x="42" y="272" fill="#a7f3d0" font-family="Menlo, Consolas, monospace" font-size="16">Found: Viewing CloudWatch logs for Lambda functions</text>
+  <text x="42" y="326" fill="#fef3c7" font-family="Menlo, Consolas, monospace" font-size="16">Creating reports/reliability/aws-docs-mcp-lambda-timeout-report.md</text>
+  <text x="42" y="360" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="16">Included: Executive Summary, AWS Concepts, Troubleshooting Steps,</text>
+  <text x="42" y="390" fill="#e5e7eb" font-family="Menlo, Consolas, monospace" font-size="16">Best Practices, Interview Explanation, What I Learned</text>
+  <text x="42" y="444" fill="#86efac" font-family="Menlo, Consolas, monospace" font-size="18">Done. Documentation-only MCP workflow completed safely.</text>
+</svg>
